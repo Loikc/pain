@@ -73,21 +73,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </template>
 
   <script>
-    document.addEventListener('google-map-marker-click', (event) => {
+
+
+    class MyView2 extends Polymer.Element {
+      static get is() { return 'my-view2';     document.addEventListener('google-map-marker-click', (event) => {
       document.querySelector('custom-gmap-infowindow').showInfoWindow(event.srcElement.marker);
     });
 
     function handleClick() {
       alert('Event handler is working, yo !');
-    }
-
-    class MyView2 extends Polymer.Element {
-      static get is() { return 'my-view2'; }
+    }}
     }
 
     window.customElements.define(MyView2.is, MyView2);
   </script>
 </dom-module>
-
-
-

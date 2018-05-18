@@ -70,10 +70,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         left: 0;
         right: 0;
       }
+
+      [hidden] {
+        display: none !important;
+      }
     </style>
 
     <!--Recupération de la position de l'appareil-->
-    <geo-location id="positionUtilisateur" latitude="{{latitudeUtilisateur}}" longitude="{{longitudeUtilisateur}}"></geo-location>
+    <geo-location id="positionUtilisateur" latitude="{{latitudeUtilisateur}}" longitude="{{longitudeUtilisateur}}" on-geo-response="_onGeoResponse"></geo-location>
 
     <div class="flex-cont">
       <!-- Affichage du menu de la carte-->
@@ -84,7 +88,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-input label="Latitude carte " value="{{latitude_carte}}"></paper-input>
             <paper-input label="Longitude carte " value="{{longitude_carte}}"></paper-input>
             <iron-icon icon="search" item-icon></iron-icon>
-            <button type="button" onclick="">Rechercher</button>
+            <button type="button" on-click="_onClickSearch">Rechercher</button>
           </paper-icon-item>
         </paper-card>
       </div>
@@ -94,23 +98,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <google-map-search map="[[map]]" query={{recherche}} results="{{results}}">
     </google-map-search>
 
-    <!-- Affichage de la carte-->
-    <google-map latitude="{{latitude_carte}}" longitude="{{longitude_carte}}" zoom="9" map="{{map}}" api-key="AIzaSyCj8AWq5dHhpamWZi8yMD2vlSdyZ-FR3Os"
-      fit-to-markers single-info-window="true">
+    <google-map hidden="[[hidemap]]" latitude="{{latitude_carte]]" longitude="{{longitude_carte}}" zoom="9" map="{{map}}" api-key="AIzaSyCj8AWq5dHhpamWZi8yMD2vlSdyZ-FR3Os"
+      fit-to-markers single-info-window="true" drag-events="true" on-google-map-dragend="_onMapDragend">
       <google-map-marker latitude="[[latitudeUtilisateur]]" longitude="[[longitudeUtilisateur]]" icon="../images/blue-dot-marker.png">Votre position</google-map-marker>
       <google-map-marker latitude="49" longitude="6">Votre position</google-map-marker>
 
       <!-- Affichage des marqueurs, résultat de la recherche d'un lieu -->
-      <template is="dom-repeat" items="{{results}}" as="marker">
+      <template is="dom-repeat" items="[[results]]" as="marker">
         <google-map-marker latitude="{{marker.latitude}}" longitude="{{marker.longitude}}"></google-map-marker>
       </template>
     </google-map>
 
   </template>
-   
+
   <script>
     class MyView1 extends Polymer.Element {
       static get is() { return 'my-view1'; }
+      // Declare properties for the element's public API
+      static get properties() {
+        return {
+          hidemap: {
+            type: String,
+            value: "hidden"
+          }
+        }
+      }
+      _onGeoResponse(event) {
+        console.log('_onGeoResponse');
+
+      }
+
+      _onClickSearch(event) {
+        console.log('_onClickSearch');
+        this.hidemap = "";
+      }
+      _onMapDragend(event) {
+        console.log('_onMapDragend');
+      }
+
     }
 
     window.customElements.define(MyView1.is, MyView1);
