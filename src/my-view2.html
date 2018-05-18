@@ -1,0 +1,93 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<script src="../bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/custom-gmap-infowindow/custom-gmap-infowindow.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/google-map/google-map.html">
+<link rel="import" href="../bower_components/google-map/google-map-directions.html">
+<link rel="import" href="../bower_components/google-map/google-map-poly.html">
+<link rel="import" href="../bower_components/google-map/google-map-point.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
+<link rel="import" href="../bower_components/geo-location/geo-location.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+
+<dom-module id="my-view2">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      google-map {
+        height: 500px;
+        width: 100%;
+      }
+
+      custom-gmap-infowindow paper-button {
+        background: var(--primary-color);
+        color: #fff;
+        width: 100%;
+        margin: 0;
+      }
+
+      custom-gmap-infowindow h3 {
+        margin: 0 0 5px 0;
+      }
+    </style>
+
+    <google-map click-events fit-to-markers api-key="AIzaSyCj8AWq5dHhpamWZi8yMD2vlSdyZ-FR3Os">
+      <google-map-marker click-events slot="markers" latitude="49.183333" longitude="-0.350000"></google-map-marker>
+      <custom-gmap-infowindow hide-marker-on-click>
+        <div class="layout vertical">
+          <h3>Caen</h3>
+          <img src="https://www.normandyalacarte.com/wp-content/uploads/2016/05/880px-Normandie_Calvados_Caen1_tango7174-300x100.jpg"
+            width="300" height="100">
+          <p>Caen is a commune in northwestern France. It is the prefecture of the Calvados department. The city proper has
+            108,365 inhabitants (as of 2012), while its urban area has 420,000, making Caen the largest city in former Lower
+            Normandy.
+          </p>
+          <paper-button class="custom" raised onclick="handleClick()">CLICK ME !</paper-button>
+        </div>
+      </custom-gmap-infowindow>
+    </google-map>
+  </template>
+
+  <script>
+    document.addEventListener('google-map-marker-click', (event) => {
+      document.querySelector('custom-gmap-infowindow').showInfoWindow(event.srcElement.marker);
+    });
+
+    function handleClick() {
+      alert('Event handler is working, yo !');
+    }
+
+    class MyView2 extends Polymer.Element {
+      static get is() { return 'my-view2'; }
+    }
+
+    window.customElements.define(MyView2.is, MyView2);
+  </script>
+</dom-module>
+
+
+

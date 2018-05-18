@@ -1,0 +1,8 @@
+        <google-map-marker latitude="{{marker.latitude}}" longitude="{{marker.longitude}}">
+        </google-map-marker>
+
+            <google-map-search map="[[map]]" query="{{recherche}}" results="{{results}}">
+    </google-map-search>
+
+
+        document.getElementById("carte").setAttribute("latitude") = document.getElementById("positionUtilisateur").getAttribute("latitude");
