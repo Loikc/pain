@@ -28,18 +28,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <dom-module id="my-view3">
   <template>
     <style include="shared-styles">
-      :host {
-        display: block;
-
-        padding: 10px;
-      }
-
       [hidden] {
         display: none !important;
       }
 
       paper-card {
-        display: inline-flex;
         z-index: 1;
       }
 
@@ -55,8 +48,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       /* Other styles that make things more pleasant.
        These could instead be added in styles.css since they
        do not use any Polymer styling features. */
-
-
 
       paper-tab.iron-selected {
         background: rgb(66, 133, 244);
@@ -85,23 +76,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       #map {
-        width: 100vw;
-        height: 100vh;
+        height: 92vh;
+        width: 87vw;
       }
     </style>
 
     <div class="flex-cont">
       <geo-location id="positionUtilisateur" latitude="{{userLat}}" longitude="{{userLong}}" on-geo-response="_onGeoResponse"></geo-location>
 
-      <div>
-        <paper-card elevation="2">
-          <paper-icon-item>
-            <paper-input label="Où rechercher?" value="{{recherche}}"></paper-input>
-            <iron-icon icon="search" item-icon></iron-icon>
-            <button type="button" on-click="_onClickSearch">Rechercher</button>
-          </paper-icon-item>
-        </paper-card>
-      </div>
+
+      <paper-card elevation="2">
+        <paper-icon-item>
+          <paper-input label="Où rechercher?" value="{{recherche}}"></paper-input>
+          <iron-icon icon="search" item-icon></iron-icon>
+          <button type="button" on-click="_onClickSearch">Rechercher</button>
+        </paper-icon-item>
+      </paper-card>
       <p id="information" hidden="[[hidetext]]">Comme vous n'avez pas activé la géolocalisation sur votre appareil ! Effectuez une recherche afin de trouver les distributeurs
         dans le lieu qui vous interresse.
       </p>
@@ -110,8 +100,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <google-map-search map="[[map]]" query={{recherche}} results="{{results}}">
     </google-map-search>
 
-    <google-map id="map" hidden="[[hidemap]]" latitude="{{userLat}}" longitude="{{userLong}}" zoom="9" map="{{map}}" api-key="AIzaSyCj8AWq5dHhpamWZi8yMD2vlSdyZ-FR3Os">
-    </google-map>
+    <div id="map" hidden="[[hidemap]]">
+      <google-map latitude="{{userLat}}" longitude="{{userLong}}" zoom="9" map="{{map}}" api-key="AIzaSyCj8AWq5dHhpamWZi8yMD2vlSdyZ-FR3Os">
+      </google-map>
+    </div>
 
 
 
@@ -130,14 +122,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           },
           hidetext: {
             type: String,
-            value: ""
-          },
-          userLat: {
-            type: Number,
-            value: ""
-          },
-          userLong: {
-            type: Number,
             value: ""
           }
         }
