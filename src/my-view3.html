@@ -95,7 +95,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-card>
     </div>
 
-    <google-map-search map="[[map]]" query=[[searchQuery]] results="{{results}}" on-results-changed="_onResultsChanged">
+    <google-map-search map="[[map]]" query=[[searchQuery]] results="{{searchResult}}" on-results-changed="_onResultsChanged">
     </google-map-search>
 
     <div id="map" hidden="[[hidemap]]">
@@ -103,7 +103,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <google-map-marker latitude="[[userLat]]" longitude="[[userLong]]" icon="../images/blue-dot-marker.png">Votre position</google-map-marker>
 
-        <template is="dom-repeat" items="[[results]]" as="marker">
+        <template is="dom-repeat" items="[[searchResult]]" as="marker">
           <google-map-marker latitude="{{marker.latitude}}" longitude="{{marker.longitude}}"></google-map-marker>
         </template>
 
@@ -131,15 +131,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         }
       }
-
-      _onClickSearch(event) {
-        console.log('_onClickSearch');
-        this.hidemap = "";
-        this.hidetext = "hidden";
-        this.searchQuery = this.searchInput;
-
-      }
-
       _onGeoResponse(event) {
         console.log('_onGeoResponse');
         this.hidemap = "";
@@ -147,14 +138,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.mapLat = this.userLat;
         this.mapLong = this.userLong;
       }
-
+      _onClickSearch(event) {
+        console.log('_onClickSearch');
+        this.hidemap = "";
+        this.hidetext = "hidden";
+        this.searchQuery = this.searchInput;
+      }
       _onMapDragend(event) {
         console.log('_onMapDragend');
       }
-
       _onResultsChanged(event) {
         console.log('_onResultsChanged');
-
+        this.mapLat = this.searchResult[0].latitude;
+        this.mapLong = this.searchResult[0].longitude;
       }
     }
 
