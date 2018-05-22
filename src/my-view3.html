@@ -26,7 +26,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/geo-location/geo-location.html">
 
 <dom-module id="my-view3">
-  <template>
+  <template is="dom-bind">
     <style include="shared-styles">
       [hidden] {
         display: none !important;
@@ -44,10 +44,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       paper-tab {
         --paper-tab-ink: #BBDEFB;
       }
-
-      /* Other styles that make things more pleasant.
-       These could instead be added in styles.css since they
-       do not use any Polymer styling features. */
 
       paper-tab.iron-selected {
         background: rgb(66, 133, 244);
@@ -76,32 +72,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       #map {
-        height: 92vh;
-        width: 87vw;
+        width: 100%;
+        height: 100%;
       }
     </style>
 
     <div class="flex-cont">
       <geo-location id="positionUtilisateur" latitude="{{userLat}}" longitude="{{userLong}}" on-geo-response="_onGeoResponse"></geo-location>
 
-
       <paper-card elevation="2">
         <paper-icon-item>
-          <paper-input label="Où rechercher?" value="{{recherche}}"></paper-input>
-          <iron-icon icon="search" item-icon></iron-icon>
-          <button type="button" on-click="_onClickSearch">Rechercher</button>
+
+          <paper-input label="Où rechercher?" value="{{searchInput}}"></paper-input>
+          <paper-icon-button icon="search" on-click="_onClickSearch"></paper-icon-button>
+
         </paper-icon-item>
+
+        <p id="information" hidden="[[hidetext]]">Comme vous n'avez pas activé la géolocalisation sur votre appareil, effectuez une recherche afin de trouver les distributeurs
+          dans le lieu qui vous interresse.
+        </p>
+
       </paper-card>
-      <p id="information" hidden="[[hidetext]]">Comme vous n'avez pas activé la géolocalisation sur votre appareil ! Effectuez une recherche afin de trouver les distributeurs
-        dans le lieu qui vous interresse.
-      </p>
     </div>
 
-    <google-map-search map="[[map]]" query={{recherche}} results="{{results}}">
+    <google-map-search map="[[map]]" query=[[searchQuery]] results="{{results}}" on-results-changed="_onResultsChanged">
     </google-map-search>
 
     <div id="map" hidden="[[hidemap]]">
-      <google-map latitude="{{userLat}}" longitude="{{userLong}}" zoom="9" map="{{map}}" api-key="AIzaSyCj8AWq5dHhpamWZi8yMD2vlSdyZ-FR3Os">
+      <google-map latitude="{{mapLat}}" longitude="{{mapLong}}" zoom="13" map="{{map}}" api-key="AIzaSyCj8AWq5dHhpamWZi8yMD2vlSdyZ-FR3Os">
+
+        <google-map-marker latitude="[[userLat]]" longitude="[[userLong]]" icon="../images/blue-dot-marker.png">Votre position</google-map-marker>
+
+        <template is="dom-repeat" items="[[results]]" as="marker">
+          <google-map-marker latitude="{{marker.latitude}}" longitude="{{marker.longitude}}"></google-map-marker>
+        </template>
+
       </google-map>
     </div>
 
@@ -131,13 +136,23 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         console.log('_onClickSearch');
         this.hidemap = "";
         this.hidetext = "hidden";
+        this.searchQuery = this.searchInput;
       }
 
       _onGeoResponse(event) {
         console.log('_onGeoResponse');
         this.hidemap = "";
         this.hidetext = "hidden";
+        this.mapLat = this.userLat;
+        this.mapLong = this.userLong;
+      }
 
+      _onMapDragend(event) {
+        console.log('_onMapDragend');
+      }
+
+      _onResultsChanged(event){
+        console.log('_onResultsChanged');
       }
     }
 
