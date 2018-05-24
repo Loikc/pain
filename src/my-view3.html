@@ -144,7 +144,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           distance(lat0, long0, lat1, long1) {
             var d1 = (long1 - long0) * cos(lat0);
             var d2 = (lat1 - lat0);
-            return 69*(sqrt(d1 * d1 + d2 * d2));
+            return 69*(Math.sqrt(d1 * d1 + d2 * d2));
           }
         }
       }
