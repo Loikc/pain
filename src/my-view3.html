@@ -34,11 +34,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       paper-card {
         z-index: 1;
+        margin-top: 10px;
       }
 
       paper-tabs {
         --paper-tabs-selection-bar-color: #0D47A1;
-        margin-top: 16px;
       }
 
       paper-tab {
@@ -51,10 +51,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       paper-icon-item {
-        text-align: justify;
         padding-left: 0;
         padding-right: 0;
-
       }
 
       .flex-cont {
@@ -78,18 +76,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
 
     <div class="flex-cont">
-      <geo-location id="positionUtilisateur" latitude="{{userLat}}" longitude="{{userLong}}" on-geo-response="_onGeoResponse"></geo-location>
-
       <paper-card elevation="2">
-        <paper-icon-item>
 
+        <paper-icon-item>
           <paper-input label="Où rechercher?" value="{{searchInput}}"></paper-input>
           <paper-icon-button icon="search" on-click="_onClickSearch"></paper-icon-button>
-
         </paper-icon-item>
 
-        <p id="information" hidden="[[hideText]]">Comme vous n'avez pas activé la géolocalisation sur votre appareil, effectuez une recherche afin de trouver les distributeurs
-          dans le lieu qui vous interresse.
+        <p id="information" hidden="[[hideText]]">
+          Comme vous n'avez pas activé la géolocalisation sur votre appareil, effectuez une recherche afin de trouver les distributeurs dans le lieu qui vous intérresse.
         </p>
 
       </paper-card>
@@ -98,8 +93,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <google-map-search map="[[map]]" query=[[searchQuery]] results="{{searchResult}}" on-results-changed="_onResultsChanged">
     </google-map-search>
 
+    
     <div id="map" hidden="[[hideMap]]">
-      <google-map latitude="{{mapLat}}" longitude="{{mapLong}}" zoom="13" map="{{map}}" api-key="AIzaSyC-0UzsPhQ338QatV9Z4U_4iK0aZLn367E">
+      <google-map latitude="{{mapLat}}" longitude="{{mapLong}}" zoom="13" map="{{map}}" api-key="AIzaSyCMEn5Sz61hFVudJ3jFL6JV0xDyC87MtoQ">
 
         <google-map-marker latitude="[[userLat]]" longitude="[[userLong]]" icon="../images/blue-dot-marker.png">Votre position</google-map-marker>
 
@@ -109,6 +105,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       </google-map>
     </div>
+
+    <geo-location id="positionUtilisateur" latitude="{{userLat}}" longitude="{{userLong}}" on-geo-response="_onGeoResponse"></geo-location>
   </template>
 
   <script>
@@ -141,10 +139,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         this.hideMap = "";
         this.hideText = "hidden";
         this.searchQuery = this.searchInput;
-      }
-
-      _onMapDragend(event) {
-        console.log('_onMapDragend');
       }
 
       _onResultsChanged(event) {
