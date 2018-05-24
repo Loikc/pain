@@ -24,6 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-icons/maps-icons.html">
 <link rel="import" href="../bower_components/paper-tabs/paper-tabs.html">
 <link rel="import" href="../bower_components/geo-location/geo-location.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="my-view3">
   <template is="dom-bind">
@@ -84,7 +85,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-icon-item>
 
         <p id="information" hidden="[[hideText]]">
-          Comme vous n'avez pas activé la géolocalisation sur votre appareil, effectuez une recherche afin de trouver les distributeurs dans le lieu qui vous intérresse.
+          Puisque vous n'avez pas activé la géolocalisation sur votre appareil, effectuez une recherche afin de trouver les distributeurs
+          dans le lieu qui vous intérresse.
         </p>
 
       </paper-card>
@@ -93,7 +95,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <google-map-search map="[[map]]" query=[[searchQuery]] results="{{searchResult}}" on-results-changed="_onResultsChanged">
     </google-map-search>
 
-    
+
     <div id="map" hidden="[[hideMap]]">
       <google-map latitude="{{mapLat}}" longitude="{{mapLong}}" zoom="13" map="{{map}}" api-key="AIzaSyCMEn5Sz61hFVudJ3jFL6JV0xDyC87MtoQ">
 
@@ -103,10 +105,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <google-map-marker latitude="{{marker.latitude}}" longitude="{{marker.longitude}}"></google-map-marker>
         </template>
 
+        <template is="dom-repeat" items="[[distributorTab]]" as="distributor">
+          <google-map-marker latitude="{{distributor.latitude}}" longitude="{{distributor.longitude}}"></google-map-marker>
+        </template>
+
       </google-map>
     </div>
 
     <geo-location id="positionUtilisateur" latitude="{{userLat}}" longitude="{{userLong}}" on-geo-response="_onGeoResponse"></geo-location>
+    <iron-ajax url="distributors.json" handle-as="json" last-response="{{distributors}}"></iron-ajax>
   </template>
 
   <script>
@@ -122,6 +129,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           hideText: {
             type: String,
             value: ""
+          },
+          distributorTab: {
+            type: Array
+          },
+          searchDistributors(lat, long) {
+            this.distributorTab = [];
+            this.distributors.forEach(element => {
+              if (distance(latitude, longitude, element.latitude, element.longitude) < 30) {
+                distributorTab.push(element);
+              }
+            });
+          },
+          distance(lat0, long0, lat1, long1) {
+            var d1 = (long1 - long0) * cos(lat0);
+            var d2 = (lat1 - lat0);
+            return 69*(sqrt(d1 * d1 + d2 * d2));
           }
         }
       }
